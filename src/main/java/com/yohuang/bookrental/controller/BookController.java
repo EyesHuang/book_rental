@@ -4,6 +4,9 @@ import com.yohuang.bookrental.dto.request.BorrowRequest;
 import com.yohuang.bookrental.dto.response.BookResponse;
 import com.yohuang.bookrental.dto.response.ErrorResponse;
 import com.yohuang.bookrental.service.BookService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,19 +15,24 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+@Tag(name = "Books")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/books")
 public class BookController {
     private final BookService bookService;
 
+    @Operation(summary = "Get all books")
     @GetMapping
     public ResponseEntity<List<BookResponse>> getBooks(
+            @Parameter(description = "offset", example = "0")
             @RequestParam(defaultValue = "0") int offset,
+            @Parameter(description = "limit", example = "10")
             @RequestParam(defaultValue = "10") int limit) {
         return ResponseEntity.ok(bookService.getAllBooks(offset, limit));
     }
 
+    @Operation(summary = "Get a book by Id")
     @GetMapping("/{id}")
     public ResponseEntity<BookResponse> getBook(@PathVariable UUID id) {
         try {
@@ -34,6 +42,7 @@ public class BookController {
         }
     }
 
+    @Operation(summary = "Borrow a book")
     @PutMapping("/borrow")
     public ResponseEntity<?> borrowBook(@RequestBody BorrowRequest request) {
         try {
@@ -46,6 +55,7 @@ public class BookController {
         }
     }
 
+    @Operation(summary = "Return a book")
     @PutMapping("/return")
     public ResponseEntity<?> returnBook(@RequestBody BorrowRequest request) {
         try {

@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class BookService {
     private final BookRepository bookRepository;
     private final InventoryRepository inventoryRepository;

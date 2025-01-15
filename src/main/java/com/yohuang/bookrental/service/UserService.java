@@ -4,6 +4,7 @@ import com.yohuang.bookrental.dao.UserRepository;
 import com.yohuang.bookrental.dto.request.LoginRequest;
 import com.yohuang.bookrental.dto.response.*;
 import com.yohuang.bookrental.entity.*;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;

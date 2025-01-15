@@ -1,0 +1,17 @@
+springdoc:
+  packages-to-scan: com.yohuang
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    use-root-path: false
+    tagsSorter: alpha
+    operations-sorter: alpha
+    doc-expansion: false
+    default-models-expand-depth: 0
+    disable-swagger-default-url: true
+  cache:
+    disabled: false
+  pre-loading-enabled: false
+  writer-with-order-by-keys: false
+  show-actuator: false

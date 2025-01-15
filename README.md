@@ -10,3 +10,5 @@ Login credentials will be:
 
 Email: myuser@email.com
 Password: pgadminpassword
+
+Swagger UI can be accessed through: http://localhost:8080/swagger-ui/index.html
