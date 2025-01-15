@@ -15,4 +15,5 @@ spring:
   profiles:
     active: local
     include:
-      - pg
+      - h2
+#      - pg
