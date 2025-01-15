@@ -1,15 +1,10 @@
 package com.yohuang.bookrental.dto.response;
 
+import lombok.Data;
+
 import java.util.List;
 
+@Data
 public class ErrorResponse {
     private List<String> errors;
-
-    public List<String> getErrors() {
-        return errors;
-    }
-
-    public void setErrors(List<String> errors) {
-        this.errors = errors;
-    }
 }

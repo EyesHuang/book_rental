@@ -5,7 +5,6 @@ import com.yohuang.bookrental.dto.response.BookResponse;
 import com.yohuang.bookrental.dto.response.ErrorResponse;
 import com.yohuang.bookrental.service.BookService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,15 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/books")
 public class BookController {
     private final BookService bookService;
-
-    @Autowired
-    public BookController(BookService bookService) {
-        this.bookService = bookService;
-    }
 
     @GetMapping
     public ResponseEntity<List<BookResponse>> getBooks(

@@ -1,18 +1,11 @@
 package com.yohuang.bookrental.service;
 
-import com.yohuang.bookrental.dao.BookRepository;
-import com.yohuang.bookrental.dao.InventoryRepository;
-import com.yohuang.bookrental.dao.UserRepository;
+import com.yohuang.bookrental.dao.*;
 import com.yohuang.bookrental.dto.request.BorrowRequest;
-import com.yohuang.bookrental.dto.response.BookResponse;
-import com.yohuang.bookrental.dto.response.InventoryUserResponse;
-import com.yohuang.bookrental.dto.response.UserResponse;
-import com.yohuang.bookrental.entity.AppUser;
-import com.yohuang.bookrental.entity.Book;
-import com.yohuang.bookrental.entity.Inventory;
+import com.yohuang.bookrental.dto.response.*;
+import com.yohuang.bookrental.entity.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,18 +13,12 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 public class BookService {
     private final BookRepository bookRepository;
     private final InventoryRepository inventoryRepository;
     private final UserRepository userRepository;
-
-    @Autowired
-    public BookService(BookRepository bookRepository, InventoryRepository inventoryRepository, UserRepository userRepository) {
-        this.bookRepository = bookRepository;
-        this.inventoryRepository = inventoryRepository;
-        this.userRepository = userRepository;
-    }
 
     public List<BookResponse> getAllBooks(int offset, int limit) {
         return bookRepository.findAll()

@@ -2,31 +2,20 @@ package com.yohuang.bookrental.service;
 
 import com.yohuang.bookrental.dao.UserRepository;
 import com.yohuang.bookrental.dto.request.LoginRequest;
-import com.yohuang.bookrental.dto.response.BookResponse;
-import com.yohuang.bookrental.dto.response.InventoryBookResponse;
-import com.yohuang.bookrental.dto.response.SimpleBookResponse;
-import com.yohuang.bookrental.dto.response.UserResponse;
-import com.yohuang.bookrental.entity.AppUser;
-import com.yohuang.bookrental.entity.Book;
-import com.yohuang.bookrental.entity.Inventory;
+import com.yohuang.bookrental.dto.response.*;
+import com.yohuang.bookrental.entity.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     public UserResponse login(LoginRequest request) {
         AppUser user = userRepository.findByUsername(request.getUsername())
