@@ -1,14 +1,29 @@
-# book_rental
+# Book Rental API
 
+## Development Setup
+
+### H2 Database (Development)
+1. Use H2 in-memory database (default profile):
+```bash
+./mvnw spring-boot:run -Dspring-boot.run.profiles=h2
+```
+
+### PostgreSQL Database (Production)
+1. Start PostgreSQL:
 ```bash
 docker-compose up -d
 ```
 
-For the current Docker compose setup, you can access pgAdmin through:
-http://localhost:80
-Login credentials will be:
+2. Run with PostgreSQL profile:
+```bash
+./mvnw spring-boot:run -Dspring-boot.run.profiles=local
+```
 
+3. pgAdmin: http://localhost:80
+```
 Email: myuser@email.com
 Password: pgadminpassword
+```
 
-Swagger UI can be accessed through: http://localhost:8080/swagger-ui/index.html
+## API Documentation
+Swagger UI: http://localhost:8080/swagger-ui/index.html 
