@@ -1,0 +1,20 @@
+logging:
+  config: classpath:logback-text.xml
+  file:
+    path: temp/logs
+    name: ${spring.application.name}
+  level:
+    root: info
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: book-rental
+  profiles:
+    active: local
+    include:
+      - common
+      - h2
+#      - pg

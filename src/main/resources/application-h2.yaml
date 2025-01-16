@@ -1,0 +1,30 @@
+spring:
+#  sql:
+#    init:
+#      mode: always
+#      schema-locations:
+#        - classpath:sql/schema.sql
+#      data-locations:
+#        - classpath:sql/data.sql
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
+        # the password: 1qaz2wsx3edc
+        ## use `org.h2.server.web.WebServer.encodeAdminPassword` to create
+        web-admin-password: 3ce7f89ed2f439f7ebfdc6330b9999e266f71c0fcaafa7f132d030cb27b5c55d1312492bd2dd8ef2f2666095938a1921556fe3eda482636b6334843d000ba90f
+  datasource:
+    url: jdbc:h2:file:./temp/data/h2;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH
+    driverClassName: org.h2.Driver
+    hikari:
+      jdbc-url: jdbc:h2:file:./temp/data/h2;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH
+      username: root
+      password: 123456
+      minimum-idle: 10
+      maximum-pool-size: 200
+      idle-timeout: 300000
+      max-lifetime: 1200000
+      auto-commit: true
