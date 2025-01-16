@@ -1,5 +1,7 @@
 package com.yohuang.bookrental.service;
 
+import com.yohuang.bookrental.exception.ConflictException;
+import com.yohuang.bookrental.exception.NotFoundException;
 import com.yohuang.bookrental.repository.*;
 import com.yohuang.bookrental.dto.request.BorrowRequest;
 import com.yohuang.bookrental.dto.response.*;
@@ -28,21 +30,21 @@ public class BookService {
 
     public BookResponse findById(String id) {
         Book book = bookRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Book not found"));
+                .orElseThrow(() -> new NotFoundException("Book not found"));
         return toBookResponse(book);
     }
 
     @Transactional
     public void borrowBook(BorrowRequest request) {
         Inventory inventory = inventoryRepository.findById(request.getInventoryId())
-                .orElseThrow(() -> new RuntimeException("Inventory not found"));
+                .orElseThrow(() -> new NotFoundException("Book not found"));
 
         if (inventory.getUser() != null) {
-            throw new RuntimeException("Book is already borrowed");
+            throw new ConflictException("Book is already borrowed");
         }
 
         AppUser user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
 
         inventory.setUser(user);
         inventory.setLoanDate(LocalDateTime.now());

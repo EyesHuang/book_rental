@@ -1,9 +1,10 @@
 package com.yohuang.bookrental.controller;
 
 import com.yohuang.bookrental.dto.request.BorrowRequest;
-import com.yohuang.bookrental.dto.response.BookResponse;
 import com.yohuang.bookrental.dto.response.ErrorResponse;
 import com.yohuang.bookrental.entity.Book;
+import com.yohuang.bookrental.exception.ConflictException;
+import com.yohuang.bookrental.exception.NotFoundException;
 import com.yohuang.bookrental.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Tag(name = "Books")
 @RequiredArgsConstructor
@@ -34,11 +36,23 @@ public class BookController {
 
     @Operation(summary = "Get a book by Id")
     @GetMapping("/{id}")
-    public ResponseEntity<BookResponse> getBook(@PathVariable String id) {
+    public ResponseEntity<?> getBook(@PathVariable String id) {
         try {
+            // Validate UUID format first
+            UUID.fromString(id);
             return ResponseEntity.ok(bookService.findById(id));
+        } catch (IllegalArgumentException e) {
+            ErrorResponse error = new ErrorResponse();
+            error.setErrors(List.of("Invalid UUID format"));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        } catch (NotFoundException e) {
+            ErrorResponse error = new ErrorResponse();
+            error.setErrors(List.of(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
         } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
+            ErrorResponse error = new ErrorResponse();
+            error.setErrors(List.of(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
         }
     }
 
@@ -46,12 +60,27 @@ public class BookController {
     @PutMapping("/borrow")
     public ResponseEntity<?> borrowBook(@RequestBody BorrowRequest request) {
         try {
+            // Validate UUID format first
+            UUID.fromString(request.getUserId());
+            UUID.fromString(request.getInventoryId());
             bookService.borrowBook(request);
             return ResponseEntity.accepted().build();
-        } catch (RuntimeException e) {
+        } catch (IllegalArgumentException e) {
+            ErrorResponse error = new ErrorResponse();
+            error.setErrors(List.of("Invalid UUID format"));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        } catch (NotFoundException e) {
+            ErrorResponse error = new ErrorResponse();
+            error.setErrors(List.of(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+        } catch (ConflictException e) {
             ErrorResponse error = new ErrorResponse();
             error.setErrors(List.of(e.getMessage()));
             return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+        } catch (RuntimeException e) {
+            ErrorResponse error = new ErrorResponse();
+            error.setErrors(List.of(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
         }
     }
 
@@ -59,8 +88,15 @@ public class BookController {
     @PutMapping("/return")
     public ResponseEntity<?> returnBook(@RequestBody BorrowRequest request) {
         try {
+            // Validate UUID format first
+            UUID.fromString(request.getUserId());
+            UUID.fromString(request.getInventoryId());
             bookService.returnBook(request);
             return ResponseEntity.accepted().build();
+        } catch (IllegalArgumentException e) {
+            ErrorResponse error = new ErrorResponse();
+            error.setErrors(List.of("Invalid UUID format"));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
         } catch (RuntimeException e) {
             ErrorResponse error = new ErrorResponse();
             error.setErrors(List.of(e.getMessage()));

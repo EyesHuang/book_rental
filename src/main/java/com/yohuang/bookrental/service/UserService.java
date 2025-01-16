@@ -1,5 +1,6 @@
 package com.yohuang.bookrental.service;
 
+import com.yohuang.bookrental.exception.NotFoundException;
 import com.yohuang.bookrental.repository.InventoryRepository;
 import com.yohuang.bookrental.repository.UserRepository;
 import com.yohuang.bookrental.dto.request.LoginRequest;
@@ -22,10 +23,10 @@ public class UserService {
 
     public UserResponse login(LoginRequest request) {
         AppUser user = userRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new NotFoundException("Not found"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid password");
+            throw new IllegalArgumentException("Invalid password");
         }
 
         return toUserResponse(user);
@@ -33,7 +34,7 @@ public class UserService {
 
     public UserResponse getUserById(String id) {
         AppUser user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
         return toUserResponse(user);
     }
 

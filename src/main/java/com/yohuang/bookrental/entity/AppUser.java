@@ -11,12 +11,9 @@ public class AppUser {
     @UuidGenerator
     private String id;
 
-    @Column(name="username")
     private String username;
 
-    @Column(name="password")
     private String password;
 
-    @Column(name="role")
     private String role;
 }
