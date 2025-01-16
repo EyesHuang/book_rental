@@ -97,10 +97,18 @@ public class BookController {
             ErrorResponse error = new ErrorResponse();
             error.setErrors(List.of("Invalid UUID format"));
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-        } catch (RuntimeException e) {
+        } catch (NotFoundException e) {
+            ErrorResponse error = new ErrorResponse();
+            error.setErrors(List.of(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+        } catch (ConflictException e) {
             ErrorResponse error = new ErrorResponse();
             error.setErrors(List.of(e.getMessage()));
             return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+        } catch (RuntimeException e) {
+            ErrorResponse error = new ErrorResponse();
+            error.setErrors(List.of(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
         }
     }
 }

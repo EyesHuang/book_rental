@@ -53,9 +53,16 @@ public class BookService {
 
     @Transactional
     public void returnBook(BorrowRequest request) {
-        Inventory inventory = inventoryRepository.findByIdAndUserId(
-                        request.getInventoryId(), request.getUserId())
-                .orElseThrow(() -> new RuntimeException("Book not found or not borrowed by this user"));
+        Inventory inventory = inventoryRepository.findById(request.getInventoryId())
+                .orElseThrow(() -> new NotFoundException("Book not found"));
+
+        if (inventory.getUser() == null) {
+            throw new ConflictException("Book is not borrowed");
+        }
+
+        if (!inventory.getUser().getId().equals(request.getUserId())) {
+            throw new ConflictException("The book can't be returned by another user");
+        }
 
         inventory.setUser(null);
         inventory.setLoanDate(null);
