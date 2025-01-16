@@ -6,6 +6,6 @@ import java.util.UUID;
 
 @Data
 public class BorrowRequest {
-    private UUID userId;
-    private UUID inventoryId;
+    private String userId;
+    private String inventoryId;
 }

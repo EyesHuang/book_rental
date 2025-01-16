@@ -2,18 +2,14 @@ package com.yohuang.bookrental.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
-import java.util.List;
-import java.util.UUID;
+import org.hibernate.annotations.UuidGenerator;
 
 @Data
 @Entity
-@Table(name="app_user")
 public class AppUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name="id")
-    private UUID id;
+    @UuidGenerator
+    private String id;
 
     @Column(name="username")
     private String username;
@@ -23,8 +19,4 @@ public class AppUser {
 
     @Column(name="role")
     private String role;
-
-    @OneToMany(mappedBy="user",
-            cascade={CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    private List<Inventory> inventories;
 }

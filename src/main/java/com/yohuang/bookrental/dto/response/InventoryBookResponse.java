@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Data
 public class InventoryBookResponse {
-    private UUID id;
+    private String id;
     private LocalDateTime loanDate;
     private SimpleBookResponse book;
 }

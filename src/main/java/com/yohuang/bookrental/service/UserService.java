@@ -1,6 +1,7 @@
 package com.yohuang.bookrental.service;
 
-import com.yohuang.bookrental.dao.UserRepository;
+import com.yohuang.bookrental.repository.InventoryRepository;
+import com.yohuang.bookrental.repository.UserRepository;
 import com.yohuang.bookrental.dto.request.LoginRequest;
 import com.yohuang.bookrental.dto.response.*;
 import com.yohuang.bookrental.entity.*;
@@ -14,9 +15,9 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-@Transactional
 public class UserService {
     private final UserRepository userRepository;
+    private final InventoryRepository inventoryRepository;
     private final PasswordEncoder passwordEncoder;
 
     public UserResponse login(LoginRequest request) {
@@ -30,7 +31,7 @@ public class UserService {
         return toUserResponse(user);
     }
 
-    public UserResponse getUserById(UUID id) {
+    public UserResponse getUserById(String id) {
         AppUser user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return toUserResponse(user);
@@ -41,9 +42,10 @@ public class UserService {
         response.setId(user.getId());
         response.setUsername(user.getUsername());
         response.setRole(user.getRole());
-        response.setInventories(user.getInventories().stream()
-                .map(this::toInventoryBookResponse)
-                .collect(Collectors.toList()));
+        response.setInventories(
+                inventoryRepository.findByUserId(user.getId()).stream()
+                        .map(this::toInventoryBookResponse)
+                        .collect(Collectors.toList()));
         return response;
     }
 

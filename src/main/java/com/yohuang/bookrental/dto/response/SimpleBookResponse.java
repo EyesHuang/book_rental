@@ -6,7 +6,7 @@ import java.util.UUID;
 
 @Data
 public class SimpleBookResponse {
-    private UUID id;
+    private String id;
     private String title;
     private String author;
     private String image;

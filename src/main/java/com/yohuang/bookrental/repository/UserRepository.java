@@ -1,4 +1,4 @@
-package com.yohuang.bookrental.dao;
+package com.yohuang.bookrental.repository;
 
 import com.yohuang.bookrental.entity.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,6 +8,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface UserRepository extends JpaRepository<AppUser, UUID> {
+public interface UserRepository extends JpaRepository<AppUser, String> {
     Optional<AppUser> findByUsername(String username);
 }

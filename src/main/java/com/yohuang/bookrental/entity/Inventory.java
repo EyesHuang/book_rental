@@ -2,27 +2,24 @@ package com.yohuang.bookrental.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Data
 @Entity
-@Table(name="inventory")
 public class Inventory {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name="id")
-    private UUID id;
+    @UuidGenerator
+    private String id;
 
-    @Column(name="loan_date")
     private LocalDateTime loanDate;
 
-    @ManyToOne(cascade={CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade={CascadeType.ALL})
     @JoinColumn(name="user_id")
     private AppUser user;
 
-    @ManyToOne(cascade={CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade={CascadeType.ALL})
     @JoinColumn(name="book_id")
     private Book book;
 }

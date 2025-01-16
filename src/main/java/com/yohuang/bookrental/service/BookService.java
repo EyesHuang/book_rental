@@ -1,11 +1,13 @@
 package com.yohuang.bookrental.service;
 
-import com.yohuang.bookrental.dao.*;
+import com.yohuang.bookrental.repository.*;
 import com.yohuang.bookrental.dto.request.BorrowRequest;
 import com.yohuang.bookrental.dto.response.*;
 import com.yohuang.bookrental.entity.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,22 +17,16 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-@Transactional
 public class BookService {
     private final BookRepository bookRepository;
     private final InventoryRepository inventoryRepository;
     private final UserRepository userRepository;
 
-    public List<BookResponse> getAllBooks(int offset, int limit) {
-        return bookRepository.findAll()
-                .stream()
-                .skip(offset)
-                .limit(limit)
-                .map(this::toBookResponse)
-                .collect(Collectors.toList());
+    public Page<Book> findAll(Pageable page) {
+        return bookRepository.findAll(page);
     }
 
-    public BookResponse getBookById(UUID id) {
+    public BookResponse findById(String id) {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Book not found"));
         return toBookResponse(book);
@@ -70,9 +66,11 @@ public class BookService {
         response.setTitle(book.getTitle());
         response.setAuthor(book.getAuthor());
         response.setImage(book.getImage());
-        response.setInventories(book.getInventories().stream()
-                .map(this::toInventoryUserResponse)
-                .collect(Collectors.toList()));
+        response.setInventories(
+                inventoryRepository.findByBookId(book.getId()).stream()
+                        .map(this::toInventoryUserResponse)
+                        .collect(Collectors.toList())
+        );
         return response;
     }
 

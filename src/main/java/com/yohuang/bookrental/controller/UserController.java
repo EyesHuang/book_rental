@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @Tag(name = "Users")
 @RequiredArgsConstructor
@@ -33,7 +32,7 @@ public class UserController {
 
     @Operation(summary = "Get a user by Id")
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUser(@PathVariable UUID id) {
+    public ResponseEntity<?> getUser(@PathVariable String id) {
         try {
             return ResponseEntity.ok(userService.getUserById(id));
         } catch (RuntimeException e) {
